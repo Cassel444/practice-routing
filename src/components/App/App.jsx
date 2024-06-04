@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import css from "./App.module.css";
 import Navigation from "../Navigation/Navigation";
-import Error from "../../pages/Error";
+import NotFound from "../../pages/NotFound";
 import HomePage from "../../pages/HomePage";
 import PaymentDetailsPage from "../../pages/PaymentDetailsPage";
 import PaymentsPage from "../../pages/PaymentsPage";
@@ -20,7 +20,7 @@ function App() {
           <Route path="client" element={<ClientInfo />} />
           <Route path="receipt" element={<PaymentReceipt />} />
         </Route>
-        <Route path="*" element={<Error />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Error() {
+function NotFound() {
   return (
     <div>
       <p>Oops! Not found!</p>
@@ -8,4 +8,4 @@ function Error() {
     </div>
   );
 }
-export default Error;
+export default NotFound;
