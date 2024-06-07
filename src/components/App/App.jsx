@@ -1,28 +1,35 @@
 import { Route, Routes } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import css from "./App.module.css";
 import Navigation from "../Navigation/Navigation";
-import NotFound from "../../pages/NotFound";
-import HomePage from "../../pages/HomePage";
-import PaymentDetailsPage from "../../pages/PaymentDetailsPage";
-import PaymentsPage from "../../pages/PaymentsPage";
-import ClientInfo from "../ClientInfo/ClientInfo";
-import PaymentReceipt from "../PaymentReceipt/PaymentReceipt.jsx";
+
+const HomePage = lazy(() => import("../../pages/HomePage"));
+const PaymentsPage = lazy(() => import("../../pages/PaymentsPage"));
+const PaymentDetailsPage = lazy(() => import("../../pages/PaymentDetailsPage"));
+const NotFound = lazy(() => import("../../pages/NotFound"));
+const ClientInfo = lazy(() => import("../ClientInfo/ClientInfo"));
+const PaymentReceipt = lazy(() =>
+  import("../PaymentReceipt/PaymentReceipt.jsx")
+);
 
 function App() {
   return (
     <div className={css.box}>
       <Navigation />
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/payments" element={<PaymentsPage />} />
-        <Route path="/payments/:paymentId" element={<PaymentDetailsPage />}>
-          <Route path="client" element={<ClientInfo />} />
-          <Route path="receipt" element={<PaymentReceipt />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<div>LOADING PAGE...</div>}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/payments" element={<PaymentsPage />} />
+          <Route path="/payments/:paymentId" element={<PaymentDetailsPage />}>
+            <Route path="client" element={<ClientInfo />} />
+            <Route path="receipt" element={<PaymentReceipt />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 }
+
 export default App;

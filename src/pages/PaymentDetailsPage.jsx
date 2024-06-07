@@ -1,12 +1,22 @@
-import { useEffect, useState } from "react";
-import { NavLink, Outlet, useParams } from "react-router-dom";
+import { Suspense, useEffect, useRef, useState } from "react";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import { getPaymentById } from "../payments-api";
 
 function PaymentDetailsPage() {
   const { paymentId } = useParams();
+
   const [payment, setPayment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const location = useLocation();
+  const backLinkRef = useRef(location.state ?? "/payments");
 
   useEffect(() => {
     async function getData() {
@@ -26,9 +36,9 @@ function PaymentDetailsPage() {
   return (
     <div>
       <h1>PaymentDetailsPage: {paymentId}</h1>
+      <Link to={backLinkRef.current}>Go back</Link>
       {isLoading && <b>Loading payment...</b>}
       {error && <b>HTTP error!</b>}
-
       {payment && (
         <div>
           <p>Amount: {payment.amount}</p>
@@ -48,7 +58,9 @@ function PaymentDetailsPage() {
           <NavLink to="receipt">Receipt info</NavLink>
         </li>
       </ul>
-      <Outlet />
+      <Suspense fallback={null}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 }
